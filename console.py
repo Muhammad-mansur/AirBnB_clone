@@ -3,18 +3,20 @@
 import cmd
 
 
+__classes_list = ["BaseModel", "User"]
+
 class HBNBCommand(cmd.Cmd):
     """This class defines the interpreter"""
     prompt = '(hbnb) '
 
     def do_quit(self, arg):
         """This defines quitting command to qxit the program"""
-        reture True
+        return True
 
     def do_EOF(self, arg):
         """This defines the condition to quit when encountered with EOF"""
         print()
-        reture True
+        return True
 
     def emptyline(self):
         """Override method to ensure empty lines"""
@@ -22,4 +24,4 @@ class HBNBCommand(cmd.Cmd):
 
 
 if __name__ == '__main__':
-    HBNBCommand()cmdloop()
+    HBNBCommand().cmdloop()
