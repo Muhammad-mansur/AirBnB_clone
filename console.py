@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 """import cmd module"""
 import cmd
+import models
+from models.base_model import BaseModel
+from models import storage
 
 
 __classes_list = ["BaseModel", "User"]
@@ -21,6 +24,17 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """Override method to ensure empty lines"""
         pass
+
+    def do_create(self, arg):
+        """Create a new instance"""
+        if not arg:
+            print("** class name missing **")
+        elif arg != "BaseModel":
+            print("** class doesn't exsit **")
+        else:
+            new_instance = BaseModel()
+            new_instance.save()
+            print(new_instance.id)
 
 
 if __name__ == '__main__':
