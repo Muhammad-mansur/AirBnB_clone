@@ -8,6 +8,7 @@ from models import storage
 
 __classes_list = ["BaseModel", "User"]
 
+
 class HBNBCommand(cmd.Cmd):
     """This class defines the interpreter"""
     prompt = '(hbnb) '
