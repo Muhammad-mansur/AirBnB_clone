@@ -4,6 +4,7 @@
 Store first object
 """
 
+from models.user import User
 from models.base_model import BaseModel
 import os.path
 import json
@@ -40,6 +41,12 @@ class FileStorage:
 
     def reload(self):
         """Deserialize the JSON file __file_path to __objects, if it exists."""
+        
+        classes = {
+            "BaseModel": BaseModel,
+            "User": User,
+        }
+        
         try:
             with open(FileStorage.__file_path, "r") as file:
                 objects_dict = json.load(file)
