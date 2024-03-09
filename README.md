@@ -5,8 +5,11 @@ In this project, We are building a clone of the popular platform, AirBnB. Our go
 Features of the Console:
 
 Creating New Objects
+
 Retrieving Objects from Files
+
 Performing Operations on Objects
+
 Destroying Objects
 
 Storage:
