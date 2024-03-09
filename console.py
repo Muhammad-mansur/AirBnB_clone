@@ -36,54 +36,62 @@ class HBNBCommand(cmd.Cmd):
         elif arg != "BaseModel":
             print("** class doesn't exsit **")
         else:
-            new_instance = BaseModel()
+            new_instance = eval(arg)()
             new_instance.save()
             print(new_instance.id)
 
     def do_show(self, arg):
         """Prints the string rep of an instance"""
+        args = arg.split()
         if not arg:
             print("** class name missing **")
-        elif arg != "BaseModel":
+        elif args[0] != "BaseModel":
             print("** class doesn't exist **")
-        elif len(arg) < 2:
+        elif len(args) < 2:
             print("** instance id missing **")
         else:
-            key = "{}.{}".format(arg[0], arg[1])
+            key = "{}.{}".format(args[0], args[1])
             if key in storage.all():
                 print(storage.all()[key])
             else:
                 print("** no instance found **")
 
     def do_destroy(self, arg):
+        args = arg.split()
         """Deletes an instance based on the class name and id"""
         if not arg:
             print("** class name missing **")
-        elif arg != "BaseModel":
+            return
+        elif args[0] != "BaseModel":
             print("** class doesn't exist **")
-        elif len(arg) < 2:
+            return
+        elif len(args) < 2:
             print("** instance id missing **")
-        else:
-            key = "{}.{}".format(arg[0], arg[1])
-            if key not in storage.all():
-                print("** no instance found **")
-            else:
-                del storage.all()[key]
-                storage.save()
+            return
+
+        key = "{}.{}".format(args[0], args[1])
+        if key not in storage.all():
+            print("** no instance found **")
+            return
+
+        del storage.all()[key]
+        storage.save()
 
     def do_all(self, arg):
         """Prints all string rep of all instances"""
+        args = arg.split()
         instances = []
-        if not arg:
-            if arg not in ["BaseModel"]:
-                print("** class doesn't exist **")
-                return
-            for key, obj in storage.all().items():
-                if arg in key:
-                    instances.append(str(obj))
-        else:
+
+        if not args:
             for obj in storage.all().values():
                 instances.append(str(obj))
+        elif args[0] != "BaseModel":
+            print("** class doesn't exist **")
+            return
+        else:
+            for key, obj in storage.all().items():
+                if args[0] in key:
+                    instances.append(str(obj))
 
         print(instances)
 
