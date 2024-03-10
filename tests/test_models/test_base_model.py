@@ -42,6 +42,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertNotEqual(obj.updated_at, ini_updated_at)
 
     def test_to_dict_method(self):
+        """ Test to_dict() method """
         obj = BaseModel()
         obj_dict = obj.to_dict()
         self.assertTrue('_class__' in obj_dict)
