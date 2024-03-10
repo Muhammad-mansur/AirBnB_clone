@@ -8,7 +8,7 @@ from models.amenity import Amenity
 
 
 class TestAmenity(unittest.TestCase):
-    """ Amenity model """
+    """ Amenity model test cases """
     def test_instance_attributes(self):
         """ Test instance attribute """
         amenity = Amenity()
