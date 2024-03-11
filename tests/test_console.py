@@ -5,6 +5,7 @@
 import unittest
 from unittest.mock import patch, MagicMock
 from models import storage
+from console import HBNBCommand
 from io import StringIO  # For simulating user input
 
 
@@ -14,7 +15,7 @@ class TestHBNBCommand(unittest.TestCase):
     def test_quit(self, mock_stdout):
         command = HBNBCommand()
         self.assertTrue(command.do_quit(""))
-        self.assertEqual(mock_stdout.write.call_count 1)
+        self.assertEqual(mock_stdout.write.call_count, 1)
 
     def test_EOF(self, mock_stdout):
         """ Test End of File """
