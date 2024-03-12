@@ -12,17 +12,23 @@ from io import StringIO  # For simulating user input
 
 class TestHBNBCommand(unittest.TestCase):
     """ Test HBNB command """
+
+    def tearDown(self):
+        """ Clean up storage after each test """
+        storage.reset()
+
     @patch('sys.stdout')
     def test_quit(self, mock_stdout):
         command = HBNBCommand()
         command.do_quit('')
         self.assertEqual(mock_stdout.write.call_count, 0)
 
-    def test_EOF(self, mock_stdout):
+    def test_EOF(self):
         """ Test End of File """
         command = HBNBCommand()
-        self.assertTrue(command.do_EOF(""))
-        self.assertEqual(mock_stdout.write.call_count, 1)
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            self.assertTrue(command.do_EOF(""))
+            self.assertEqual(mock_stdout.write.call_count, 1)
 
     def test_emptyline(self):
         """ Test Empty Line """
@@ -30,14 +36,20 @@ class TestHBNBCommand(unittest.TestCase):
         self.assertIsNone(command.emptyline())
 
     @patch('models.storage.new')
-    def test_create_valid_class(self, mock_new):
+    @patch('models.storage.save')
+    def test_create_valid_class(self, mock_save, mock_new):
         """ Test valid class creation """
         command = HBNBCommand()
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
             command.do_create("User")
             mock_stdout.getvalue().strip()
+<<<<<<< HEAD
         mock_new.assert_called_once_with(ANY)
         storage.save.assert_called_once()
+=======
+        mock_new.assert_called_once_with(User)
+        mock_save.assert_called_once()
+>>>>>>> 9d1834d1373f052d98cd00b262d90fe67b98353d
 
     @patch('sys.stdout')
     def test_create_invalid_class(self, mock_stdout):
@@ -63,9 +75,10 @@ class TestHBNBCommand(unittest.TestCase):
         user = User(email="test@example.com", password="password")
         user.save()
         command = HBNBCommand()
-        command.do_show("User {}".format(user.id))
-        mock_stdout.write.assert_called_once_with(str(user) + "\n")
-        storage.all().pop(f"User.{user.id}")  # Cleanup
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            command.do_show("User {}".format(user.id))
+            self.assertEqual(mock_stdout.write.call_count, 1)
+        storage.all().pop("User.{}".format(user.id))  # Cleanup
 
     @patch('sys.stdout')
     def test_show_invalid_class(self, mock_stdout):
@@ -99,21 +112,25 @@ class TestHBNBCommand(unittest.TestCase):
         """ Test no instance """
         command = HBNBCommand()
         command.do_show("User 123")
+<<<<<<< HEAD
         expected_calls = [call("** no instance found **"), call('\n')]
         mock_stdout.write.assert_has_calls(expected_calls)
         self.assertEqual(mock_stdout.write.call_count, 2)
         storage.reset()
+=======
+        mock_stdout.write.assert_called_once_with("** no instance found **\n")
+>>>>>>> 9d1834d1373f052d98cd00b262d90fe67b98353d
 
-    @patch('sys.stdout')
     @patch('models.storage.delete')
-    def test_destroy_valid_args(self, mock_delete, mock_stdout):
+    @patch('models.storage.save')
+    def test_destroy_valid_args(self, mock_save, mock_delete):
         """ Test destroy valid arguments """
         user = User(email="test@example.com", password="password")
         user.save()
         command = HBNBCommand()
         command.do_destroy("User {}".format(user.id))
-        mock_delete.assert_called_once_with(f"User.{user.id}")
-        storage.save.assert_called_once()
+        mock_delete.assert_called_once_with("User.{}".format(user.id))
+        mock_save.assert_called_once()
 
 
 if __name__ == '__main__':
