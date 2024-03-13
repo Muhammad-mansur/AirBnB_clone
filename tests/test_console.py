@@ -16,6 +16,7 @@ class TestHBNBCommand(unittest.TestCase):
     def tearDown(self):
         """ Clean up storage after each test """
         storage.reset()
+        super().tearDown()
 
     @patch('sys.stdout')
     def test_quit(self, mock_stdout):
