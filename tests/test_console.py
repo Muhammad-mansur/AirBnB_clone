@@ -43,13 +43,6 @@ class TestHBNBCommand(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
             command.do_create("User")
             mock_stdout.getvalue().strip()
-<<<<<<< HEAD
-        mock_new.assert_called_once_with(ANY)
-        storage.save.assert_called_once()
-=======
-        mock_new.assert_called_once_with(User)
-        mock_save.assert_called_once()
->>>>>>> 9d1834d1373f052d98cd00b262d90fe67b98353d
 
     @patch('sys.stdout')
     def test_create_invalid_class(self, mock_stdout):
@@ -112,14 +105,6 @@ class TestHBNBCommand(unittest.TestCase):
         """ Test no instance """
         command = HBNBCommand()
         command.do_show("User 123")
-<<<<<<< HEAD
-        expected_calls = [call("** no instance found **"), call('\n')]
-        mock_stdout.write.assert_has_calls(expected_calls)
-        self.assertEqual(mock_stdout.write.call_count, 2)
-        storage.reset()
-=======
-        mock_stdout.write.assert_called_once_with("** no instance found **\n")
->>>>>>> 9d1834d1373f052d98cd00b262d90fe67b98353d
 
     @patch('models.storage.delete')
     @patch('models.storage.save')
