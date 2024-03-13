@@ -15,7 +15,15 @@ from models.review import Review
 from models import storage
 
 
-__classes_list = ["BaseModel", "User", "Place", "State", "City", "Amenity", "Review"]
+__classes_list = [
+        "BaseModel",
+        "User",
+        "Place",
+        "State",
+        "City",
+        "Amenity",
+        "Review"
+        ]
 
 
 class HBNBCommand(cmd.Cmd):
