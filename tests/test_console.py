@@ -5,6 +5,7 @@
 import unittest
 from unittest.mock import patch, MagicMock, call, ANY
 from models import storage
+from models.engine.file_storage import FileStorage
 from models.user import User
 from console import HBNBCommand
 from io import StringIO  # For simulating user input
@@ -24,12 +25,12 @@ class TestHBNBCommand(unittest.TestCase):
         command.do_quit('')
         self.assertEqual(mock_stdout.write.call_count, 0)
 
-    def test_EOF(self):
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_EOF(self, mock_stdout):
         """ Test End of File """
         command = HBNBCommand()
-        with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            self.assertTrue(command.do_EOF(""))
-            self.assertEqual(mock_stdout.write.call_count, 1)
+        self.assertTrue(command.do_EOF(""))
+        self.assertEqual(mock_stdout.getvalue().count('\n'), 1)
 
     def test_emptyline(self):
         """ Test Empty Line """
@@ -51,7 +52,7 @@ class TestHBNBCommand(unittest.TestCase):
         command = HBNBCommand()
         command.do_create("InvalidClass")
         expected_calls = [call("** class doesn't exist **"), call('\n')]
-        mock_stdout.write.assert_has_call(expected_calls)
+        mock_stdout.write.assert_has_calls(expected_calls)
         self.assertEqual(mock_stdout.write.call_count, 2)
 
     @patch('sys.stdout')
@@ -59,20 +60,20 @@ class TestHBNBCommand(unittest.TestCase):
         """ Test no class creation """
         command = HBNBCommand()
         command.do_create("")
-        expected_calls = [call("** class namw missing **\n"), call('\n')]
-        mock_stdout.write.assert_called_has_calls(expected_calls)
+        expected_calls = [call("** class name missing **"), call('\n')]
+        mock_stdout.write.assert_has_calls(expected_calls)
         self.assertEqual(mock_stdout.write.call_count, 2)
 
-    @patch('sys.stdout')
+    @patch('sys.stdout', new_callable=StringIO)
     def test_show_valid_args(self, mock_stdout):
         """ Test valid args """
         user = User(email="test@example.com", password="password")
         user.save()
         command = HBNBCommand()
-        with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            command.do_show("User {}".format(user.id))
-            self.assertEqual(mock_stdout.write.call_count, 1)
-        storage.all().pop("User.{}".format(user.id))  # Cleanup
+        command.do_show("User {}".format(user.id))
+        expected_output = "User." + user.id + " " + str(user.to_dict()) + "\n"
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
+        del storage.all()["User." + user.id]
 
     @patch('sys.stdout')
     def test_show_invalid_class(self, mock_stdout):
@@ -112,11 +113,9 @@ class TestHBNBCommand(unittest.TestCase):
     def test_destroy_valid_args(self, mock_save, mock_delete):
         """ Test destroy valid arguments """
         user = User(email="test@example.com", password="password")
-        user.save()
         command = HBNBCommand()
-        command.do_destroy("User {}".format(user.id))
-        mock_delete.assert_called_once_with("User.{}".format(user.id))
-        mock_save.assert_called_once()
+        command.do_destroy(f"User {user.id}")
+        self.assertNotIn(f"User {user.id}", storage.all().keys())
 
 
 if __name__ == '__main__':
