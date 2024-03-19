@@ -1,17 +1,19 @@
-AirBnB Clone - Console Command Interpreter
+# AirBnB Clone Project
 
-In this project, We are building a clone of the popular platform, AirBnB. Our goal is to create a command-line interface (CLI) that will serve as a command interpreter for managing objects and their abstraction, as well as handling their storage.
+Welcome to the AirBnB clone project! This is the initial step towards building a full web application resembling AirBnB. This phase involves creating a command interpreter to manage AirBnB objects.
 
-Features of the Console:
+## Objective
+The goal of this project is to:
 
-Creating New Objects
+- Implement a command-line interface to handle AirBnB objects such as User, State, City, Place, etc.
+- Set up a parent class (BaseModel) responsible for initialization, serialization, and deserialization of future instances.
+- Establish a serialization/deserialization flow: Instance <-> Dictionary <-> JSON string <-> file.
+- Create classes for AirBnB objects inheriting from BaseModel.
+- Develop the first abstracted storage engine for the project: File storage.
+- Construct comprehensive unit tests to validate classes and the storage engine.
 
-Retrieving Objects from Files
+## Installation
+Clone this repo in your terminal:
 
-Performing Operations on Objects
-
-Destroying Objects
-
-Storage:
-
-To manage the classes and their data storage, we will use the Storage engine. The engine will utilize the FileStorage class, which will handle reading and writing objects to and from files on the system.
+```bash
+$ git clone https://github.com/MaryEhb/AirBnB_clone
