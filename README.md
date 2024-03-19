@@ -15,37 +15,34 @@ The goal of this project is to:
 ## Installation
 Clone this repo in your terminal:
 
-```bash
 $ git clone https://github.com/Muhammad-mansur/AirBnB_clone
+
 
 ## Execution
 The Shell works in both interactive and non-interactive modes. Examples include:
 
-Interactive Mode:
+**Interactive Mode:**
 
-```bash
 $ ./console.py
 (hbnb) help
 
 Documented commands (type help <topic>):
-========================================
-EOF  help  quit
+EOF help quit
 
-(hbnb) 
-(hbnb) 
+(hbnb)
+(hbnb)
 (hbnb) quit
 $
 
-Non-Interactive Mode:
 
-```bash
+**Non-Interactive Mode:**
+
 $ echo "help" | ./console.py
 (hbnb)
 
 Documented commands (type help <topic>):
-========================================
-EOF  help  quit
-(hbnb) 
+EOF help quit
+(hbnb)
 $
 $ cat test_help
 help
@@ -54,15 +51,5 @@ $ cat test_help | ./console.py
 (hbnb)
 
 Documented commands (type help <topic>):
-========================================
-EOF  help  quit
-(hbnb) 
-
-## Supported Commands
-
-The console.py command interpreter supports the following commands:
-
-1. `help`: Display help
-
-```bash
-$ help
+EOF help quit
+(hbnb)
