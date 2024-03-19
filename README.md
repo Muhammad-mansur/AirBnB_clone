@@ -70,7 +70,6 @@ The `console.py` command interpreter supports the following commands:
 
 1. `help`: Display help
 
-```bash
 $ help
 
 2. `quit`: Quit command to exit the program.
