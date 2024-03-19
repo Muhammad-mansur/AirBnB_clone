@@ -37,12 +37,26 @@ class FileStorage:
         key = "{}.{}".format(class_name, obj.id)
         FileStorage.__objects[key] = obj
 
+    def reset(self):
+        """reset the storage to an yempty state"""
+        self.__objects = {}
+        with open(self.__file_path, 'w') as file:
+            file.write("{}")
+
     def save(self):
         """Serialize __objects to the JSON file __file_path."""
         objects_dict = {key: obj.to_dict()
                         for key, obj in FileStorage.__objects.items()}
         with open(FileStorage.__file_path, "w") as file:
             json.dump(objects_dict, file)
+
+    def delete(self, obj=None):
+        """ Delete object from _object """
+        if obj is not None:
+            key = f"{type(obj).__name__}.{obj.id}"
+            if key in self.__objects:
+                del self.__objects[key]
+                self.save
 
     def reload(self):
         """Deserialize the JSON file __file_path to __objects, if it exists."""
