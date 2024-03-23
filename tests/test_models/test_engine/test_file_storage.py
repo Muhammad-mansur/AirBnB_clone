@@ -16,8 +16,8 @@ class TestFileStorage(unittest.TestCase):
         self.test_storage = FileStorage()
 
     @patch('os.path.exists')
-    """ check if path exists """
     def test_reload_no_file(self, mock_exists):
+        """ check if path exists """
         mock_exists.return_value = False
         self.test_storage.reload()
         self.assertEqual(self.test_storage.all(), {})
