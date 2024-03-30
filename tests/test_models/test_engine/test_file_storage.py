@@ -2,6 +2,8 @@
 
 """ Unittest """
 
+import os
+import json
 import unittest
 from unittest.mock import patch
 from models.base_model import BaseModel
@@ -28,7 +30,7 @@ class TestFileStorage(unittest.TestCase):
             f.write('{}')
         self.test_storage.reload()
         self.assertEqual(self.test_storage.all(), {})
-        os.remove('file.json')  # Cleanup
+        os.remove('file.json')
 
     def test_reload_with_data(self):
         """ check for data reload """
@@ -36,14 +38,13 @@ class TestFileStorage(unittest.TestCase):
         self.test_storage.new(user)
         self.test_storage.save()
 
-        self.test_storage = FileStorage()  # Re-initialize
+        self.test_storage = FileStorage()
         self.test_storage.reload()
 
         objects = self.test_storage.all()
         self.assertEqual(len(objects), 1)
         self.assertIsInstance(list(objects.values())[0], User)
-        os.remove('file.json')  # Cleanup
-
+        os.remove('file.json')
     def test_new_and_save(self):
         """ check for new() and save() """
         user = User(email="test@example.com", password="password")
@@ -56,7 +57,7 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(len(loaded_objects), 1)
         self.assertEqual(loaded_objects[
             f"{user.__class__.__name__}.{user.id}"]["email"], user.email)
-        os.remove('file.json')  # Cleanup
+        os.remove('file.json')
 
     def test_all(self):
         """ test """
